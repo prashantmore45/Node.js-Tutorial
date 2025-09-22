@@ -1,0 +1,1 @@
+This the mini project 02 filecreation in CLI using node js
