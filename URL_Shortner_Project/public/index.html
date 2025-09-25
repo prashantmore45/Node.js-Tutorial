@@ -10,7 +10,7 @@
     
     <div class="container">
         <h1>URL Shortener</h1>
-        <form id="shorten-from">
+        <form id="shorten-form">
             <div>
                 <label for="url">Enter URL:</label>
                 <input type="url" name="url" id="url">
@@ -26,14 +26,50 @@
     </div>
     
     <script>
-        document.getElementById('shorten-from').addEventListener('submit', (event) => {
+
+        const fetchShortendURL = async () => {
+            const response = await fetch("/links");
+            const links = await response.json();
+            console.log("links", links); 
+
+            const list = document.getElementById("shortened-urls");
+            list.innerHTML = "";
+
+            for (const [shortCode, url] of Object.entries(links)) {
+                const li = document.createElement('li');
+                const truncatedURL = url.length >= 30 ? `${url.slice(0, 30)}...` : url;
+                li.innerHTML = `<a href="/${shortCode}" target="_blank">${window.location.origin}/${shortCode}</a> - ${truncatedURL}`
+                list.appendChild(li);
+            }
+        };
+
+        document.getElementById('shorten-form').addEventListener('submit', async (event) => {
             event.preventDefault();
             const formData = new FormData(event.target);
             const url = formData.get('url');
             const shortCode = formData.get('shortCode');
 
             console.log(url, shortCode);
-        })
+
+            try {
+                const response = await fetch("/shorten", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json"},
+                    body: JSON.stringify({url, shortCode})
+                });
+                if (response.ok) {
+                    fetchShortendURL();
+                    alert("form submitted successfully");
+                    event.target.reset();
+                } else {
+                    const errorMesssage = await response.text();
+                    alert(errorMesssage);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
     </script>
 </body>
 </html>
