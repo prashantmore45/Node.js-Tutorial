@@ -35,10 +35,10 @@
             const list = document.getElementById("shortened-urls");
             list.innerHTML = "";
 
-            for (const [shortCode, url] of Object.entries(links)) {
+            for (const link of links) {
                 const li = document.createElement('li');
-                const truncatedURL = url.length >= 30 ? `${url.slice(0, 30)}...` : url;
-                li.innerHTML = `<a href="/${shortCode}" target="_blank">${window.location.origin}/${shortCode}</a> - ${truncatedURL}`
+                const truncatedURL = link.url.length >= 30 ? `${link.url.slice(0, 30)}...`: link.url;
+                li.innerHTML = `<a href="/${link.shortCode}" target="_blank">${window.location.origin}/${link.shortCode}</a> - ${truncatedURL}`;
                 list.appendChild(li);
             }
         };

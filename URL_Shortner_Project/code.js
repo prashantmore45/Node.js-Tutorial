@@ -1,11 +1,10 @@
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 import { createServer } from "http";
 import crypto from "crypto";
 import path  from "path";
-import { REFUSED } from "dns";
+import { connectDB } from "./config/db-client.js";
+import { PORT } from "./config/env.js";
 
-const PORT = 3000;
-const DATA_FILE = path.join("data", "links.json");
 
 const serverFile = async (res, filePath, contentType) => {
     try {
@@ -18,24 +17,13 @@ const serverFile = async (res, filePath, contentType) => {
     }
 };
 
-const loadLinks = async() => {
-    try {
-        const data = await readFile(DATA_FILE, "utf-8");
-        return JSON.parse(data);
-    } catch (error) {
-        if (error.code === "ENOENT") {
-            await writeFile(DATA_FILE, JSON.stringify({}));
-            return {};
-        }
-        throw error;
-    }
-};
 
-const saveLinks = async (links) => {
-    await writeFile(DATA_FILE, JSON.stringify(links));
-};
 
 const server = createServer( async (req, res) => {
+
+    const db = await connectDB();
+    const links = db.collection("links");
+
     console.log(req.url);
 
     if (req.method === "GET") {
@@ -44,16 +32,17 @@ const server = createServer( async (req, res) => {
         } else if (req.url === "/style.css") {
             return serverFile(res, path.join("public", "style.css"), "text/css");
         } else if (req.url === "/links") {
-            const links = await loadLinks();
-            res.writeHead(200, { "Content-Type": "application/json"});
-            return res.end(JSON.stringify(links));
+            const allLinks = await links.find().toArray();
+            res.writeHead(200, { "Content-Type": "application/json" });
+            return res.end(JSON.stringify(allLinks));
         } else {
             const shortCode = req.url.slice(1);
-            const links = await loadLinks();
-            console.log("links red. ", req.url);
-        
-            if (links[shortCode]) {
-                res.writeHead(302, { Location: links[shortCode] });
+            const link = await links.findOne({ shortCode });
+
+            if (link) {
+
+                await links.updateOne( { shortCode }, { $inc: { clicks: 1 } } );
+                res.writeHead(302, { Location: link.url });
                 return res.end();
             }
 
@@ -64,8 +53,6 @@ const server = createServer( async (req, res) => {
     }
     
     if (req.method === 'POST' && req.url === '/shorten') {
-
-        const links  = await loadLinks();
 
         let body = "";
         req.on("data", (chunk) => (body += chunk));
@@ -80,16 +67,17 @@ const server = createServer( async (req, res) => {
 
             const finalShortCode = shortCode || crypto.randomBytes(4).toString("hex");
 
-            if (links[finalShortCode]) {
+            const exists = await links.findOne({ shortCode: finalShortCode });
+
+            if (exists) {
                 res.writeHead(400, {"Content-Type": "text/plain"});
                 return res.end("Short code already exists. Please choose another.");
             }
 
-            links[finalShortCode] = url; 
-            await saveLinks(links);
+            await links.insertOne({ shortCode: finalShortCode, url, clicks: 0, createdAt: new Date() });
 
              res.writeHead(200, {"Content-Type": "application/json"});
-             res.end(JSON.stringify({ success: true, shortCode: finalShortCode}));
+             res.end(JSON.stringify({ success: true, shortCode: finalShortCode, shortUrl: `http://localhost:${PORT}/${finalShortCode}`}));
         });
     }
 });
