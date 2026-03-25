@@ -1,0 +1,51 @@
+Node.js Master Revision Notes
+============================
+
+1. The Core Runtime: Event Loop & Non-blocking I/O
+--------------------------------------------------
+- Node.js uses an event-driven, non-blocking I/O model.
+- Modules like `fs` and `http` perform asynchronous operations using callbacks or promises.
+- Example: `fs.readFile` and `fs.writeFile` do not block the main thread; Node.js continues processing other events.
+- `http.createServer` listens for requests and responds asynchronously, keeping the process alive and responsive.
+
+2. Module System: CommonJS vs ES Modules
+----------------------------------------
+- **CommonJS**: Uses `require()` and `module.exports`. Most files in this repo use this system (e.g., `require('fs')`).
+- **ES Modules**: Uses `import` and `export` syntax. Used in files like `ESmodule/app.js` and `URL_Shortner_Project/code.js`.
+- Node.js supports both, but ES Modules require `.mjs` extension or `type: "module"` in `package.json`.
+
+3. Built-in Modules Used (with Real World Use Cases)
+----------------------------------------------------
+| Module   | Real World Use Case                                      |
+|----------|---------------------------------------------------------|
+| fs       | Read/write files asynchronously (logs, configs, data)    |
+| http     | Create web servers and handle HTTP requests/responses    |
+| path     | Work with file and directory paths across OSes           |
+| os       | Get system info (platform, user, CPU, memory, etc.)     |
+| events   | Implement custom event-driven logic (emit/listen)        |
+| crypto   | Generate hashes, tokens, or handle encryption            |
+| process  | Access process info, environment, and control signals    |
+
+4. package.json Anatomy
+----------------------
+- **scripts**: Defines shortcut commands (e.g., `"start": "node app.js"`) to automate tasks like starting the server or running tests.
+- **dependencies**: Packages required for your app to run in production (installed with `npm install`).
+- **devDependencies**: Packages needed only for development (testing tools, linters, etc.; installed with `npm install --save-dev`).
+- These sections help manage your project's lifecycle and ensure consistent environments.
+
+5. Execution Flow: How Node Starts & Stays Alive
+------------------------------------------------
+- Running `node index.js` (or `app.js`, `server.js`) executes the file from top to bottom.
+- If the script sets up listeners (like `http.createServer().listen()`), the process stays alive, waiting for events.
+- The event loop keeps Node.js running as long as there are pending callbacks or event listeners.
+- This makes Node.js ideal for servers and real-time applications.
+
+6. Extra Concepts
+-----------------
+- **EventEmitter**: Used to create and handle custom events (`events` module).
+- **Async/Await**: Modern way to handle asynchronous code, especially with Promises.
+- **Project Structure**: Organize code into modules and folders for maintainability.
+
+---
+
+Keep this file for quick revision of Node.js fundamentals and patterns used in your projects!
