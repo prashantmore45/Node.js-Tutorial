@@ -1,112 +1,108 @@
 # 🚀 Node.js Tutorial: Mini-Projects and Backend Examples
 
-"Showcasing core Node.js concepts through mini-projects and hands-on examples, including **APIs**, **asynchronous operations**, **database integration**, and **backend application development**."
+![Node.js](https://img.shields.io/badge/Node.js-20%2B-brightgreen?logo=node.js) ![JavaScript](https://img.shields.io/badge/Language-JavaScript-yellow?logo=javascript) ![License](https://img.shields.io/badge/License-MIT-blue)
+
+> A hands-on Node.js learning path covering core modules, async patterns, and a full-stack capstone project.
 
 ---
 
-## 📚 Table of Contents
+## 📋 Description
 
-* [Overview](#-overview)
-* [What You Will Learn](#-what-you-will-learn)
-* [Projects and Examples](#-projects-and-examples)
-* [Technologies Used](#-technologies-used)
-* [Getting Started](#-getting-started)
-* [Contributing](#-contributing)
-* [Author](#-author)
+This repo walks through Node.js from first principles — built-in modules (`fs`, `os`, `path`, `http`, `events`, streams), both module systems (CommonJS & ESM), and five CLI mini-projects, finishing with a full-stack URL Shortener backed by MongoDB.
 
 ---
 
-## ✨ Overview
+## 🛠️ Tech Stack
 
-This repository serves as a practical, example-driven tutorial for mastering Node.js. It moves beyond theoretical concepts by providing several **mini-projects** and dedicated folders for understanding core modules.
-
-The goal is to build a solid foundation in backend development using Node.js, covering essential topics required to build real-world applications.
-
----
-
-## 🎯 What You Will Learn
-
-This tutorial covers:
-
-* **Core Modules:** Practical usage of built-in Node.js modules like `http` and `events`.
-* **Module Systems:** Implementing and understanding both **CommonJS (`require`)** and **ES Modules (`import`)**.
-* **Asynchronous Programming:** Handling asynchronous operations effectively (e.g., callbacks, Promises, `async/await`).
-* **API Development:** Building and structuring APIs (using Express.js or the native HTTP module).
-* **Database Integration:** Connecting and performing CRUD operations with a database.
-* **Backend Application Development:** Architectural patterns and best practices for creating scalable backend applications.
+| Category | Technology |
+|---|---|
+| Runtime | Node.js 20+ |
+| Language | JavaScript (ESM & CommonJS) |
+| Database | MongoDB (URL Shortener only) |
+| Key packages | `chalk`, `dotenv`, `mongodb`, `zod` |
 
 ---
 
-## 📂 Projects and Examples
-
-The repository is organized into distinct folders for both foundational concepts and mini-projects.
-
-### Mini-Projects
-
-|         Folder Name                  |                               Description                           |      Concepts Covered    |
-|            :---                      |                                   :---                              |                 :---      | 
-| `miniProject01` to `miniProject05`   | A series of small, focused applications demonstrating key features. | Routing, middleware, basic API design, data handling. |
-| `URL_Shortener_Project`              | A complete, larger application to shorten URLs.                     | Database design, unique ID generation, redirection, and full-stack application structure. |
-
-### Core Concept Examples
-
-| Folder Name   |                             Description                                  |                   Focus Area                       |
-|     :---      |                                :---                                      |                      :---                          |
-|   `Modules`   | Examples demonstrating how to create, export, and import custom modules. |        **CommonJS** (`require/module.exports`).    |
-|  `ESmodule`   | Demonstrations of the modern ES module system in Node.js.                |              **ESM** (`import/export`).            |
-| `HTTP_Module` | Hands-on examples of creating a basic web server using the native Node.js HTTP module. | **Networking**, **Server creation**. |
-|    `Events`   | Illustrations of the `EventEmitter` class for handling custom events and asynchronous tasks. | **Event-driven architecture**. |
-
----
-
-## 🛠️ Technologies Used
-
-|       Category       |        Technology       |
-|         :---         |           :---          |
-| **Backend Runtime**  |         Node.js         |
-| **Primary Language** |        JavaScript       |
-| **Web Structure**    |          HTML           |
-|     **Styling**      |          CSS            |
-| **Package Manager**  | npm (or yarn)           |
-
----
-
-## ⚙️ Getting Started
-
-Follow these instructions to set up the project locally for development and learning.
+## ⚙️ Setup
 
 ### Prerequisites
+- **Node.js 20+** · npm · MongoDB (URL Shortener only)
 
-* **Node.js:** Ensure you have the latest stable version of Node.js installed.
-* **npm:** Comes bundled with Node.js.
-
-### Installation
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/prashantmore45/Node.js-Tutorial.git
-    cd Node.js-Tutorial
-    ```
-
-2.  **Install dependencies:**
-    Navigate into a specific project folder (e.g., `URL_Shortener_Project`) and install necessary packages.
-    ```bash
-    npm install 
-    ```
-
-### Usage
-
-To run any of the examples or projects, navigate to the respective directory and execute the main file (usually `app.js` or `server.js`).
+### Clone
 
 ```bash
-node app.js
+git clone https://github.com/prashantmore45/Node.js-Tutorial.git
+cd Node.js-Tutorial
+```
+
+### Install dependencies (per project)
+
+| Project | Directory | Command |
+|---|---|---|
+| Random Joke Fetcher | `#miniProject03` | `npm install chalk` |
+| Currency Converter | `#miniProject04` | `npm install chalk dotenv` |
+| Weather App | `#miniProject05` | `npm install dotenv` |
+| URL Shortener | `URL_Shortner_Project` | `npm install mongodb dotenv zod` |
+
+### Environment variables
+
+Create a `.env` file inside each project that requires one:
+
+**`#miniProject04/.env`**
+```
+apikey=YOUR_EXCHANGERATE_API_KEY
+```
+
+**`#miniProject05/.env`**
+```
+API_KEY=YOUR_OPENWEATHERMAP_API_KEY
+```
+
+**`URL_Shortner_Project/.env`**
+```
+PORT=3000
+MONGO_URI=mongodb://localhost:27017
+DB_NAME=urlshortener
+```
+
+---
+
+## 🚀 Usage
+
+### Concept examples (no install needed)
+
+```bash
+node app.js                                    # globals demo
+node Modules/OSModule/os.js
+node Modules/PathModule/path.js
+node Modules/FileSystemModule/sync.js          # also: async.js, promises.js, AsyncAwait.js
+node Modules/ExportandRequire/app.js
+node ESmodule/app.js
+node HTTP_Module/server.js                     # → http://localhost:3000
+node Events/app.js
+node streams/code.js
+```
+
+### Mini-projects
+
+```bash
+cd '#miniProject01' && node code.js   # CLI To-Do List
+cd '#miniProject02' && node code.js   # CLI File Creator
+cd '#miniProject03' && node code.js   # Random Joke Fetcher
+cd '#miniProject04' && node code.js   # Currency Converter  (needs .env)
+cd '#miniProject05' && node code.js   # Weather App         (needs .env, Node 18+)
+```
+
+### URL Shortener (capstone)
+
+```bash
+cd URL_Shortner_Project
+node code.js          # → http://localhost:3000
 ```
 
 ---
 
 ## 🤝 Contributing
-
-Contributions are welcome! If you have ideas for improvements or additional examples, feel free to fork the repository and submit a pull request.
 
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature-branch`).
@@ -118,6 +114,4 @@ Contributions are welcome! If you have ideas for improvements or additional exam
 
 ## 👤 Author
 
-**Prashant More**  
-GitHub: [prashantmore45](https://github.com/prashantmore45)
-
+**Prashant More** · GitHub: [prashantmore45](https://github.com/prashantmore45)
