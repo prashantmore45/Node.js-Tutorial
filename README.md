@@ -680,7 +680,7 @@ node code.js
 # Open http://localhost:3000
 ```
 
-> If any `.env` variable is missing or invalid, the server exits immediately with a descriptive Zod validation error (see `config/env.js`).
+> If any `.env` variable is missing or invalid, the server exits immediately with a descriptive `zod` validation error (see `config/env.js`).
 
 ---
 
